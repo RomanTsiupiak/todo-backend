@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
-import { config } from "./config";
+import { envConfig } from "./configs";
 import { app } from "./app";
 
 mongoose.set({ strictQuery: true });
 
 mongoose
-  .connect(config.dbHost)
-  .then(() => app.listen(config.port))
+  .connect(envConfig.dbHost)
+  .then(() => app.listen(envConfig.port))
   .catch((error) => {
-    console.log(error.message);
+    console.error(error.message);
     process.exit(1);
   });
