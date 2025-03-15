@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { emailRegex } from "@/utils";
+import { emailRegex, mongooseError } from "@/utils";
 
 const userSchema = new Schema(
   {
@@ -15,10 +15,18 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
       match: emailRegex,
+    },
+    password: {
+      type: String,
+      minlength: 6,
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
 );
+
+userSchema.post("save", mongooseError);
 
 export const User = model("user", userSchema);

@@ -1,8 +1,20 @@
 import { Response, Request } from "express";
 
-import { User } from "@/models/user.model";
+import { controllerWrapper, httpError } from "@/utils";
+import { User } from "@/models";
 
-export const getAll = async (req: Request, res: Response) => {
-  const data = await User.find();
-  res.json(data);
+const create = async (req: Request, res: Response) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (user) {
+    throw httpError(409, "Email already in use");
+  }
+
+  const newUser = await User.create(req.body);
+
+  res.status(201).json(newUser);
+};
+
+export const userController = {
+  create: controllerWrapper(create),
 };
