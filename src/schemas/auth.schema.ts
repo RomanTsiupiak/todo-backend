@@ -9,7 +9,7 @@ export const registerSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
-export const signInSchema = Joi.object({
+export const loginSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().required(),
 });
