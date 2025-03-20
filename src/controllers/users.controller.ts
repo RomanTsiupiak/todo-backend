@@ -2,7 +2,11 @@ import { Response, Request } from "express";
 
 import { controllerWrapper, httpError } from "@/utils";
 import { User } from "@/models";
-import { createHashPassword, compareHashPasswords } from "@/services";
+import {
+  createHashPassword,
+  compareHashPasswords,
+  generateToken,
+} from "@/services";
 
 const register = async (req: Request, res: Response) => {
   const user = await User.findOne({ email: req.body.email });
@@ -32,7 +36,9 @@ const login = async (req: Request, res: Response) => {
 
   if (!isValidPassword) throw httpError(400, "Incorrect email or password");
 
-  // TODO: add tokens
+  const token = generateToken(user.id);
+
+  res.status(200).json({ token });
 };
 
 export const userController = {

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, InferSchemaType, Types } from "mongoose";
 
 import { emailRegex, mongooseError } from "@/utils";
 
@@ -28,5 +28,9 @@ const userSchema = new Schema(
 );
 
 userSchema.post("save", mongooseError);
+
+export type UserDTO = InferSchemaType<typeof userSchema> & {
+  _id: Types.ObjectId;
+};
 
 export const User = model("user", userSchema);

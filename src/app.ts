@@ -5,6 +5,7 @@ import "dotenv/config";
 import { router as authRouter } from "./routes/api/auth.route";
 import { router as ticketRouter } from "./routes/api/tickets.route";
 import { HttpErrorType } from "./types";
+import { auth } from "./middlewares";
 
 export const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRouter);
 
-app.use("/api/tickets", ticketRouter);
+app.use("/api/tickets", auth, ticketRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
