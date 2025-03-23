@@ -13,3 +13,7 @@ export const loginSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
   password: Joi.string().required(),
 });
+
+export const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});

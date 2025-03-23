@@ -5,7 +5,8 @@ import { User } from "@/models";
 import {
   createHashPassword,
   compareHashPasswords,
-  generateToken,
+  generateTokenPair,
+  verifyToken,
 } from "@/services";
 
 const register = async (req: Request, res: Response) => {
@@ -36,12 +37,25 @@ const login = async (req: Request, res: Response) => {
 
   if (!isValidPassword) throw httpError(400, "Incorrect email or password");
 
-  const token = generateToken(user.id);
+  const tokens = generateTokenPair(user.id);
 
-  res.status(200).json({ token });
+  res.status(200).json({ ...tokens });
+};
+
+const refresh = async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+
+  const tokenData = verifyToken(refreshToken);
+
+  if (!tokenData) throw httpError(401, "Invalid refresh token");
+
+  const tokens = generateTokenPair(tokenData.id);
+
+  res.status(200).json({ ...tokens });
 };
 
 export const userController = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
+  refresh: controllerWrapper(refresh),
 };
