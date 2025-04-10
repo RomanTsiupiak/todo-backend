@@ -14,7 +14,10 @@ export const auth = async (req: Request, _: Response, next: NextFunction) => {
 
   if (!tokenData) next(httpError(401));
 
-  const user = await User.findById(tokenData?.id);
+  const user = await User.findById(
+    tokenData?.id,
+    "-password -createdAt -updatedAt"
+  );
 
   if (!user) next(httpError(401));
 

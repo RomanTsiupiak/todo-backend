@@ -54,8 +54,13 @@ const refresh = async (req: Request, res: Response) => {
   res.status(200).json({ ...tokens });
 };
 
+const getMe = async (req: Request, res: Response) => {
+  res.status(200).json(req.user);
+};
+
 export const userController = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
   refresh: controllerWrapper(refresh),
+  me: controllerWrapper(getMe),
 };

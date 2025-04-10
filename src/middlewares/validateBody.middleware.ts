@@ -8,7 +8,7 @@ export const validateBody =
   (req: Request, _: Response, next: NextFunction) => {
     const { error } = schema.validate(req.body);
 
-    if (error) next(httpError(400, "Bad request"));
+    if (error) next(httpError(400, error.message));
 
     next();
   };
